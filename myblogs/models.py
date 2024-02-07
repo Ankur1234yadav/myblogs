@@ -1,6 +1,9 @@
 from django.db import models
 # from .form import choices
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
+from django.utils import timezone  
+
 
 
 # Create your models here.
@@ -30,7 +33,21 @@ class blog_post(models.Model):
     blog_description=RichTextField()
     like_count=models.IntegerField(default=0, null=True)
     view_count=models.IntegerField(default=0, null=True)
+ 
 
     def __str__(self):
-        return self.blog_name   
+        return self.blog_name
+    
+class Comment(models.Model):
+    post = models.ForeignKey(blog_post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def str(self):
+        return self.text    
+    
+    
+    
+ 
 
